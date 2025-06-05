@@ -4,6 +4,22 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Pants } from "@/lib/supabase";
 
+async function getRedPants() {
+  console.time("supabase-red-query");
+  const { data, error } = await supabase
+    .from("pants")
+    .select("*")
+    .eq("category", "red")
+    .order("created_at", { ascending: false });
+  console.timeEnd("supabase-red-query");
+
+  if (error) {
+    throw new Error("Failed to fetch red pants");
+  }
+
+  return data;
+}
+
 export default function Red() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [pants, setPants] = useState<Pants[]>([]);
@@ -13,13 +29,7 @@ export default function Red() {
   useEffect(() => {
     async function fetchPants() {
       try {
-        const { data, error } = await supabase
-          .from("pants")
-          .select("*")
-          .eq("category", "red")
-          .order("created_at", { ascending: false });
-
-        if (error) throw error;
+        const data = await getRedPants();
         setPants(data || []);
       } catch (err) {
         setError(

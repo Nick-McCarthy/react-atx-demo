@@ -3,6 +3,20 @@ import { insertPants } from "@/lib/db";
 import fs from "fs";
 import path from "path";
 
+// Verify environment variables are set
+if (
+  !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+) {
+  console.error(
+    "Please make sure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set in your environment"
+  );
+  console.error("You can set them by running:");
+  console.error("$env:NEXT_PUBLIC_SUPABASE_URL='your-url'");
+  console.error("$env:NEXT_PUBLIC_SUPABASE_ANON_KEY='your-key'");
+  process.exit(1);
+}
+
 // Check if we have enough disk space (at least 100MB free)
 function checkDiskSpace(dbPath: string): boolean {
   try {

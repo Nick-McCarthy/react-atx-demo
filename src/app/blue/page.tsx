@@ -2,11 +2,13 @@ import { supabase } from "@/lib/supabase";
 import type { Pants } from "@/lib/supabase";
 
 async function getBluePants() {
+  console.time("supabase-blue-query");
   const { data, error } = await supabase
     .from("pants")
     .select("*")
     .eq("category", "blue")
     .order("created_at", { ascending: false });
+  console.timeEnd("supabase-blue-query");
 
   if (error) {
     throw new Error("Failed to fetch blue pants");

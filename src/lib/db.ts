@@ -64,7 +64,50 @@ function initDatabase() {
         VALUES (@name, @price, @image_url, @description, @sizes, @stock, @category)
       `);
 
-      const greenPants: GreenPant[] = [
+      const seedPants = [
+        // Red Pants
+        {
+          name: "Classic Red Slim Fit",
+          price: 89.99,
+          image_url:
+            "https://react-atx-demo-bucket.s3.us-east-1.amazonaws.com/pants/red/r1.webp",
+          description: "Premium slim fit red pants for a bold statement",
+          sizes: JSON.stringify(["S", "M", "L", "XL"]),
+          stock: 15,
+          category: "red",
+        },
+        {
+          name: "Red Relaxed Chinos",
+          price: 79.99,
+          image_url:
+            "https://react-atx-demo-bucket.s3.us-east-1.amazonaws.com/pants/red/r2.webp",
+          description: "Comfortable red chinos with a modern relaxed fit",
+          sizes: JSON.stringify(["S", "M", "L", "XL"]),
+          stock: 12,
+          category: "red",
+        },
+        // Blue Pants
+        {
+          name: "Classic Blue Slim Fit",
+          price: 89.99,
+          image_url:
+            "https://react-atx-demo-bucket.s3.us-east-1.amazonaws.com/pants/blue/b1.webp",
+          description: "Premium slim fit blue pants for everyday wear",
+          sizes: JSON.stringify(["S", "M", "L", "XL"]),
+          stock: 18,
+          category: "blue",
+        },
+        {
+          name: "Blue Relaxed Chinos",
+          price: 79.99,
+          image_url:
+            "https://react-atx-demo-bucket.s3.us-east-1.amazonaws.com/pants/blue/b2.webp",
+          description: "Comfortable blue chinos with a modern relaxed fit",
+          sizes: JSON.stringify(["S", "M", "L", "XL"]),
+          stock: 15,
+          category: "blue",
+        },
+        // Green Pants
         {
           name: "Classic Green Slim Fit",
           price: 89.99,
@@ -85,16 +128,86 @@ function initDatabase() {
           stock: 16,
           category: "green",
         },
-        // Add more green pants as needed
+        {
+          name: "Green Tailored Trousers",
+          price: 129.99,
+          image_url:
+            "https://react-atx-demo-bucket.s3.us-east-1.amazonaws.com/pants/green/g3.webp",
+          description: "Elegant green trousers for formal occasions",
+          sizes: JSON.stringify(["S", "M", "L", "XL"]),
+          stock: 9,
+          category: "green",
+        },
+        {
+          name: "Green Cargo Pants",
+          price: 69.99,
+          image_url:
+            "https://react-atx-demo-bucket.s3.us-east-1.amazonaws.com/pants/green/g4.webp",
+          description: "Durable green cargo pants with multiple pockets",
+          sizes: JSON.stringify(["S", "M", "L", "XL"]),
+          stock: 19,
+          category: "green",
+        },
+        {
+          name: "Green Denim Jeans",
+          price: 99.99,
+          image_url:
+            "https://react-atx-demo-bucket.s3.us-east-1.amazonaws.com/pants/green/g5.webp",
+          description: "Classic green denim jeans with modern styling",
+          sizes: JSON.stringify(["S", "M", "L", "XL"]),
+          stock: 11,
+          category: "green",
+        },
+        {
+          name: "Green Linen Pants",
+          price: 89.99,
+          image_url:
+            "https://react-atx-demo-bucket.s3.us-east-1.amazonaws.com/pants/green/g6.webp",
+          description: "Lightweight green linen pants for summer",
+          sizes: JSON.stringify(["S", "M", "L", "XL"]),
+          stock: 7,
+          category: "green",
+        },
+        {
+          name: "Green Wool Blend Pants",
+          price: 119.99,
+          image_url:
+            "https://react-atx-demo-bucket.s3.us-east-1.amazonaws.com/pants/green/g7.webp",
+          description: "Warm green wool blend pants for winter",
+          sizes: JSON.stringify(["S", "M", "L", "XL"]),
+          stock: 5,
+          category: "green",
+        },
+        {
+          name: "Green Athletic Pants",
+          price: 59.99,
+          image_url:
+            "https://react-atx-demo-bucket.s3.us-east-1.amazonaws.com/pants/green/g8.webp",
+          description: "Comfortable green athletic pants for active lifestyle",
+          sizes: JSON.stringify(["S", "M", "L", "XL"]),
+          stock: 25,
+          category: "green",
+        },
+        {
+          name: "Green Formal Trousers",
+          price: 149.99,
+          image_url:
+            "https://react-atx-demo-bucket.s3.us-east-1.amazonaws.com/pants/green/g9.webp",
+          description: "Premium green formal trousers for special occasions",
+          sizes: JSON.stringify(["S", "M", "L", "XL"]),
+          stock: 6,
+          category: "green",
+        },
       ];
 
-      const insertMany = db.transaction((pants: GreenPant[]) => {
+      const insertMany = db.transaction((pants: typeof seedPants) => {
         for (const pant of pants) {
           insert.run(pant);
         }
       });
 
-      insertMany(greenPants);
+      insertMany(seedPants);
+      console.log("Database seeded successfully!");
     }
 
     return db;
@@ -119,6 +232,7 @@ function parseSizes(sizes: string): string[] {
 // Get green pants
 export function getGreenPants(): Pants[] {
   try {
+    console.time("sqlite-green-query");
     const pants = db
       .prepare<PantsRow>(
         `
@@ -138,6 +252,7 @@ export function getGreenPants(): Pants[] {
     `
       )
       .all() as PantsRow[]; // Type assertion to fix linter errors
+    console.timeEnd("sqlite-green-query");
 
     // Convert the SQLite results to match our Pants type
     return pants.map((pant) => ({
