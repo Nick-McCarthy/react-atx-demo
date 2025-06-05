@@ -2,10 +2,15 @@ import { getGreenPants } from "@/lib/db";
 import type { Pants } from "@/lib/supabase";
 
 export default async function Green() {
+  const startTime = performance.now();
   const pants = await getGreenPants();
+  const queryTime = (performance.now() - startTime).toFixed(2);
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <div className="mb-4 p-4 bg-green-100 rounded-lg">
+        <p className="text-green-800">SQLite Query Time: {queryTime}ms</p>
+      </div>
       <h1 className="text-3xl font-bold mb-8">
         Green Pants Collection (SQLite)
       </h1>

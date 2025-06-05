@@ -1,21 +1,30 @@
-import { supabase } from "@/lib/supabase";
-import { insertPants } from "@/lib/db";
-import fs from "fs";
+import { config } from "dotenv";
 import path from "path";
+
+// Load environment variables from .env.local
+const envPath = path.resolve(process.cwd(), ".env.local");
+console.log("Loading environment variables from:", envPath);
+config({ path: envPath });
 
 // Verify environment variables are set
 if (
   !process.env.NEXT_PUBLIC_SUPABASE_URL ||
   !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 ) {
-  console.error(
-    "Please make sure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set in your environment"
-  );
-  console.error("You can set them by running:");
-  console.error("$env:NEXT_PUBLIC_SUPABASE_URL='your-url'");
-  console.error("$env:NEXT_PUBLIC_SUPABASE_ANON_KEY='your-key'");
+  console.error("Environment variables not found. Current env:", {
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL
+      ? "set"
+      : "not set",
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      ? "set"
+      : "not set",
+  });
   process.exit(1);
 }
+
+import { supabase } from "@/lib/supabase";
+import { insertPants } from "@/lib/db";
+import fs from "fs";
 
 // Check if we have enough disk space (at least 100MB free)
 function checkDiskSpace(dbPath: string): boolean {

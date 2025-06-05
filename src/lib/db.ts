@@ -234,7 +234,7 @@ export function getGreenPants(): Pants[] {
   try {
     console.time("sqlite-green-query");
     const pants = db
-      .prepare<PantsRow>(
+      .prepare(
         `
       SELECT 
         id,
@@ -247,11 +247,11 @@ export function getGreenPants(): Pants[] {
         stock,
         category
       FROM pants 
-      WHERE category = 'green'
+      WHERE category = ?
       ORDER BY created_at DESC
     `
       )
-      .all() as PantsRow[]; // Type assertion to fix linter errors
+      .all("green") as PantsRow[];
     console.timeEnd("sqlite-green-query");
 
     // Convert the SQLite results to match our Pants type

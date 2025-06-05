@@ -2,27 +2,32 @@ import { supabase } from "@/lib/supabase";
 import type { Pants } from "@/lib/supabase";
 
 async function getBluePants() {
-  console.time("supabase-blue-query");
+  const startTime = performance.now();
   const { data, error } = await supabase
     .from("pants")
     .select("*")
     .eq("category", "blue")
     .order("created_at", { ascending: false });
-  console.timeEnd("supabase-blue-query");
+  const queryTime = (performance.now() - startTime).toFixed(2);
 
   if (error) {
     throw new Error("Failed to fetch blue pants");
   }
 
-  return data;
+  return { data, queryTime };
 }
 
 export default async function Blue() {
-  const pants = await getBluePants();
+  const { data: pants, queryTime } = await getBluePants();
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Blue Pants Collection</h1>
+      <div className="mb-4 p-4 bg-blue-100 rounded-lg">
+        <p className="text-blue-800">Supabase Query Time: {queryTime}ms</p>
+      </div>
+      <h1 className="text-3xl font-bold mb-8">
+        Blue Pants Collection (Supabase)
+      </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {pants.map((pant) => (
