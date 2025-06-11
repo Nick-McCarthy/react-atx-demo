@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "tsx src/scripts/migrate-to-sqlite.ts"
+    "migrate": "tsx src/scripts/migrate-to-sqlite.ts",
+    "export-supabase": "tsx src/scripts/export-supabase-data.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.2",
@@ -16,6 +17,7 @@
     "better-sqlite3": "^11.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^16.5.0",
     "lucide-react": "^0.511.0",
     "next": "15.3.2",
     "react": "^19.0.0",

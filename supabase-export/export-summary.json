@@ -1,0 +1,16 @@
+{
+  "exportDate": "2025-06-10T21:34:27.740Z",
+  "tableName": "pants",
+  "recordCount": 27,
+  "files": [
+    "schema.sql",
+    "insert.sql",
+    "complete-migration.sql"
+  ],
+  "outputDirectory": "C:\\Users\\Nick\\Desktop\\react-atx-demo\\supabase-export",
+  "instructions": [
+    "1. Run schema.sql first to create the table structure",
+    "2. Run insert.sql to populate the data",
+    "3. Or run complete-migration.sql to do both in one go"
+  ]
+}
