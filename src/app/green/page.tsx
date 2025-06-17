@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getGreenPants } from "@/lib/db";
 import type { Pants } from "@/lib/supabase";
 

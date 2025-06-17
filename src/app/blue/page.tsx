@@ -1,6 +1,8 @@
 import { supabase } from "@/lib/supabase";
 import type { Pants } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 async function getBluePants() {
   const startTime = performance.now();
   const { data, error } = await supabase
